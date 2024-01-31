@@ -9,10 +9,9 @@ if true then return {} end
 -- * disable/enabled LazyVim plugins
 -- * override the configuration of LazyVim plugins
 return {
-  -- add gruvbox
-  { "ellisonleao/gruvbox.nvim" },
 
-  -- Configure LazyVim to load gruvbox
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+
   {
     "LazyVim/LazyVim",
     opts = {
