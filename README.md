@@ -10,3 +10,6 @@ Requirements:
 - cargo
 - nodejs
 - fzf (optional)
+- fd (fd-find)
+- fish (fish indent)
+- cmake
