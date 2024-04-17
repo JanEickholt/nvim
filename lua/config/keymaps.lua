@@ -13,3 +13,7 @@ vim.keymap.set({ "n", "v" }, "<leader>d", '"_d') -- delete content into void reg
 
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]) -- replace inline
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true }) -- chmod file executable
+
+vim.keymap.set("v", "<leader>t", "g<C-a>") -- increment numbers selected in visual mode
+
+-- vim.keymap.set("c", "w!!", "w !sudo tee -S > /dev/null %") -- experimental requires console input of password
