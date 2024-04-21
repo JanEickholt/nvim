@@ -16,6 +16,24 @@ local run_command = function(cmd, callback)
   })
 end
 
+local write_to_buffer = function(result)
+  -- Split the result into lines
+  local lines = {}
+  for s in result:gmatch("[^\r\n]+") do
+    table.insert(lines, s)
+  end
+
+  -- Create a new buffer
+  vim.api.nvim_command("enew") -- This opens a new empty buffer
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  -- Set the lines of the new buffer
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+
+  -- Optionally, set the buffer to be not modifiable if it's meant to be read-only
+  vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
+end
+
 local get_maven_groupId = function()
   local handle = io.popen("mvn help:evaluate -Dexpression=project.groupId -q -DforceStdout")
   if not handle then
@@ -40,7 +58,7 @@ vim.api.nvim_create_autocmd("FileType", {
       end
       run_command(vim.fn.system(compiler_command), function()
         local result = vim.fn.system("java -cp target/classes " .. groupID .. ".Main")
-        print(result)
+        write_to_buffer(result)
       end)
     end, { desc = "Compile and run Java project from Main" })
   end,
@@ -64,7 +82,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
       run_command(vim.fn.system(compiler_command), function()
         local result = vim.fn.system("java -cp target/classes " .. groupID .. "." .. javaFile)
-        print(result)
+        write_to_buffer(result)
       end)
     end, { desc = "Compile and run Java project from a custom file" })
   end,
@@ -91,7 +109,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
       run_command(vim.fn.system(compiler_command), function()
         local result = vim.fn.system("java -cp target/classes " .. groupID .. "." .. fileName)
-        print(result)
+        write_to_buffer(result)
       end)
     end, { desc = "Compile and run Java project from the current file" })
   end,
