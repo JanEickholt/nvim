@@ -57,7 +57,7 @@ vim.api.nvim_create_autocmd("FileType", {
         return
       end
       run_command(vim.fn.system(compiler_command), function()
-        local result = vim.fn.system("java -cp target/classes " .. groupID .. ".Main")
+        local result = vim.fn.system("java -cp target/classes " .. groupID .. ".App")
         write_to_buffer(result)
       end)
     end, { desc = "Compile and run Java project from Main" })
