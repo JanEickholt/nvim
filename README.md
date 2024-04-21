@@ -3,7 +3,7 @@
 These are just my personal vim configuration files.
 Feel free to use them but please don't blame me if something goes wrong.
 
-### Requirements:
+## Requirements
 
 - ripgrep
 - lazygit
@@ -15,9 +15,9 @@ Feel free to use them but please don't blame me if something goes wrong.
 - npm
 - cargo
 
-### Only for LaTeX:
+### Only for LaTeX
 
-<p>Some dependencies may already be included inside of texlive-*</p>
+Some dependencies may already be included inside of texlive-\*
 
 - tree-sitter-cli
 - texlive-latex
@@ -25,3 +25,7 @@ Feel free to use them but please don't blame me if something goes wrong.
 - texlive-binextra
 - zathura (for pdf preview)
 - zathura-pdf-mupdf
+
+### Only for Java
+
+- maven
