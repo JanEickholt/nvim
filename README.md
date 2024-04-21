@@ -3,7 +3,7 @@
 These are just my personal vim configuration files.
 Feel free to use them but please don't blame me if something goes wrong.
 
-Requirements:
+### Requirements:
 
 - ripgrep
 - lazygit
@@ -14,3 +14,14 @@ Requirements:
 - cmake
 - npm
 - cargo
+
+### Only for LaTeX:
+
+<p>Some dependencies may already be included inside of texlive-*</p>
+
+- tree-sitter-cli
+- texlive-latex
+- texlive-doc
+- texlive-binextra
+- zathura (for pdf preview)
+- zathura-pdf-mupdf
