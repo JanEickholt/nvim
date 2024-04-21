@@ -8,8 +8,7 @@ return {
     {
       "<leader>e",
       function()
-        require("oil").toggle_float()
-        require("oil").open()
+        require("oil").open_float()
       end,
       desc = "open oil",
     },
