@@ -25,6 +25,9 @@ Some dependencies may already be included inside of texlive-\*
 - texlive-binextra
 - zathura (for pdf preview)
 - zathura-pdf-mupdf
+- texlive-latexextra
+- texlive-latexrecommended
+- texlive-fontsrecommended
 
 ### Only for Java
 
