@@ -174,3 +174,29 @@ vim.api.nvim_create_autocmd("BufRead", {
   end,
   desc = "Create custom command 'CreateJavaProject' for Java files",
 })
+
+local function handle_image_file()
+  local filetype = vim.fn.expand("%:e")
+
+  if filetype == "png" or filetype == "jpg" or filetype == "gif" then
+    -- Open image file with sxiv
+    vim.cmd("silent !nsxiv " .. vim.fn.expand("%"))
+
+    -- Only close the current buffer
+    vim.cmd("bd") -- Use buffer delete to close only the image buffer
+  elseif filetype == "svg" then
+    -- Open SVG source code on the side
+    vim.cmd("vsplit")
+    vim.cmd("edit " .. vim.fn.expand("%"))
+    vim.cmd("terminal nsxiv " .. vim.fn.expand("%"))
+
+    -- Close the terminal window after the command
+    vim.cmd("q")
+  end
+end
+
+-- Autocmd to handle files based on their type
+vim.api.nvim_create_autocmd("BufReadPost", {
+  pattern = { "*.png", "*.jpg", "*.gif", "*.svg" },
+  callback = handle_image_file,
+})
