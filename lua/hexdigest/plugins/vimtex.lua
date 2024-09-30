@@ -9,6 +9,12 @@ return {
     vim.g["tex_indent_items"] = 0
     vim.g["tex_indent_brace"] = 0
     vim.g["vimtex_context_pdf_viewer"] = "zathura"
+    vim.g["vimtex_compiler_latexmk"] = {
+      options = {
+        "-synctex=1",
+        "-aux-directory=/tmp/vimtex",
+      },
+    }
     vim.g["vimtex_log_ignore"] = {
       "Underfull",
       "Overfull",
