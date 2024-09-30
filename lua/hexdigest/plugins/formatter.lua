@@ -18,6 +18,7 @@ return {
         python = { "black" },
         c = { "clang-format" },
         cpp = { "clang-format" },
+        php = { "pretty-php" },
       },
       format_on_save = {
         lsp_fallback = true,

@@ -5,6 +5,7 @@ return {
       python = { "pylint" },
       c = { "cpplint" },
       cpp = { "cpplint" },
+      php = { "phpcs" },
     }
 
     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
