@@ -11,20 +11,16 @@ local run_command = function(cmd, callback)
 end
 
 local write_to_buffer = function(result)
-  -- Split the result into lines
   local lines = {}
   for s in result:gmatch("[^\r\n]+") do
     table.insert(lines, s)
   end
 
-  -- Create a new buffer
-  vim.api.nvim_command("vnew") -- This opens a new empty buffer
+  vim.api.nvim_command("vnew")
   local bufnr = vim.api.nvim_get_current_buf()
 
-  -- Set the lines of the new buffer
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
 
-  -- Optionally, set the buffer to be not modifiable if it's meant to be read-only
   vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
   vim.api.nvim_buf_set_option(bufnr, "buftype", "nofile")
   vim.api.nvim_buf_set_option(bufnr, "bufhidden", "hide")

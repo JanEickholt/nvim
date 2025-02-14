@@ -51,13 +51,16 @@ return {
         name = "lldb",
         type = "cpp",
         request = "launch",
+        args = function()
+          local args_string = vim.fn.input("Arguments: ")
+          return vim.split(args_string, " ")
+        end,
         program = function()
           return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
         end,
         cwd = "${workspaceFolder}",
         externalTerminal = false,
         stopOnEntry = true,
-        args = {},
       },
     }
     dap.configurations.c = dap.configurations.cpp

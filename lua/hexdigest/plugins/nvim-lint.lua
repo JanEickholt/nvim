@@ -4,7 +4,6 @@ return {
     require("lint").linters_by_ft = {
       python = { "pylint" },
       php = { "phpcs" },
-      java = { "checkstyle" },
     }
 
     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {

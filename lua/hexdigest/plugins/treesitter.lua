@@ -6,22 +6,25 @@ return {
     "windwp/nvim-ts-autotag",
   },
   config = function()
-    local treesitter = require("nvim-treesitter.configs")
+    require("nvim-ts-autotag").setup({
+      opts = {
+        enable_close = true,
+        enable_rename = true,
+        enable_close_on_slash = false,
+      },
+      per_filetype = {},
+    })
 
-    treesitter.setup({
+    require("nvim-treesitter.configs").setup({
       modules = {},
-      ignore_install = {},
+      ensure_installed = {},
       sync_install = false,
       auto_install = true,
+      ignore_install = {},
       highlight = {
         enable = true,
         additional_vim_regex_highlighting = false,
       },
-      indent = { enable = true },
-      autotag = {
-        enable = true,
-      },
-      ensure_installed = {},
       incremental_selection = {
         enable = true,
         keymaps = {

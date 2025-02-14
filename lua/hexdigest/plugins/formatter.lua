@@ -6,14 +6,15 @@ return {
 
     conform.setup({
       formatters_by_ft = {
-        javascript = { "prettier_d" },
-        typescript = { "prettier_d" },
-        javascriptreact = { "prettier_d" },
-        typescriptreact = { "prettier_d" },
-        css = { "prettier_d" },
-        html = { "prettier_d" },
-        json = { "prettier_d" },
-        yaml = { "prettier_d" },
+        javascript = { "prettierd" },
+        typescript = { "prettierd" },
+        javascriptreact = { "prettierd" },
+        typescriptreact = { "prettierd" },
+        svelte = { "prettierd" },
+        css = { "prettierd" },
+        html = { "prettierd" },
+        json = { "prettierd" },
+        yaml = { "prettierd" },
         lua = { "stylua" },
         python = { "black" },
         c = { "clang-format" },
