@@ -32,13 +32,6 @@ return {
           capabilities = capabilities,
         })
       end,
-      --[[ ["tsserver"] = function()
-				nvim_lsp["tsserver"].setup({
-					on_attach = on_attach,
-					capabilities = capabilities,
-				})
-			end,
-			]]
       ["lua_ls"] = function()
         nvim_lsp["lua_ls"].setup({
           on_attach = on_attach,
@@ -64,14 +57,13 @@ return {
           capabilities = capabilities,
         })
       end,
-
+      --]]
       ["ts_ls"] = function()
         nvim_lsp["ts_ls"].setup({
           on_attach = on_attach,
           capabilities = capabilities,
         })
       end,
-      --]]
       ["jdtls"] = function()
         nvim_lsp["jdtls"].setup({
           on_attach = on_attach,
