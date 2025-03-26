@@ -22,11 +22,12 @@ return {
         php = { "pretty-php" },
         rust = { "rustfmt" },
         java = { "clang-format" },
+        tex = { "latexindent" },
       },
       format_on_save = {
         lsp_fallback = true,
         async = false,
-        timeout_ms = 1000,
+        timeout_ms = 10000,
       },
     })
 
