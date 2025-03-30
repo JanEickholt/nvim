@@ -1,15 +1,15 @@
 return {
-  "mfussenegger/nvim-dap",
-  recommended = true,
-  desc = "Debugging support. Requires language specific adapters to be configured. (see lang extras)",
+	"mfussenegger/nvim-dap",
+	recommended = true,
+	desc = "Debugging support. Requires language specific adapters to be configured. (see lang extras)",
 
-  dependencies = {
-    "rcarriga/nvim-dap-ui",
-    {
-      "theHamsta/nvim-dap-virtual-text",
-      opts = {},
-    },
-  },
+	dependencies = {
+		"rcarriga/nvim-dap-ui",
+		{
+			"theHamsta/nvim-dap-virtual-text",
+			opts = {},
+		},
+	},
 
   -- stylua: ignore
   keys = {
@@ -33,37 +33,37 @@ return {
     { "<leader>dw", function() require("dap.ui.widgets").hover() end,                                     desc = "Widgets" },
   },
 
-  config = function()
-    vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
-    vim.fn.sign_define("DapBreakpoint", { text = "🔴", texthl = "red", linehl = "", numhl = "" })
+	config = function()
+		vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
+		vim.fn.sign_define("DapBreakpoint", { text = "🔴", texthl = "red", linehl = "", numhl = "" })
 
-    local dap = require("dap")
-    dap.adapters.cpp = {
-      type = "server",
-      port = "${port}",
-      executable = {
-        command = "/home/user/.local/share/nvim/mason/bin/codelldb",
-        args = { "--port", "${port}" },
-      },
-    }
-    dap.configurations.cpp = {
-      {
-        name = "lldb",
-        type = "cpp",
-        request = "launch",
-        args = function()
-          local args_string = vim.fn.input("Arguments: ")
-          return vim.split(args_string, " ")
-        end,
-        program = function()
-          return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-        end,
-        cwd = "${workspaceFolder}",
-        externalTerminal = false,
-        stopOnEntry = true,
-      },
-    }
-    dap.configurations.c = dap.configurations.cpp
-    dap.configurations.rust = dap.configurations.cpp
-  end,
+		local dap = require("dap")
+		dap.adapters.cpp = {
+			type = "server",
+			port = "${port}",
+			executable = {
+				command = "/home/user/.local/share/nvim/mason/bin/codelldb",
+				args = { "--port", "${port}" },
+			},
+		}
+		dap.configurations.cpp = {
+			{
+				name = "lldb",
+				type = "cpp",
+				request = "launch",
+				args = function()
+					local args_string = vim.fn.input("Arguments: ")
+					return vim.split(args_string, " ")
+				end,
+				program = function()
+					return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+				end,
+				cwd = "${workspaceFolder}",
+				externalTerminal = false,
+				stopOnEntry = true,
+			},
+		}
+		dap.configurations.c = dap.configurations.cpp
+		dap.configurations.rust = dap.configurations.cpp
+	end,
 }
