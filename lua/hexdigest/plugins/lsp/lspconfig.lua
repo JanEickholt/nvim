@@ -13,6 +13,7 @@ return {
 
     local on_attach = function(client, bufnr)
       vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+      vim.diagnostic.config({ virtual_text = true })
       -- format on save
       if client.server_capabilities.documentFormattingProvider then
         vim.api.nvim_create_autocmd("BufWritePre", {
