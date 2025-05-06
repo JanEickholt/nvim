@@ -9,6 +9,17 @@ vim.keymap.set("x", "<leader>p", '"_dP')
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y')
 vim.keymap.set({ "n", "v" }, "<leader>d", '"_d')
 
+-- Make Y work like D or C
+vim.keymap.set("n", "Y", "y$")
+
+-- Stop cc, x, and X from overwriting default register
+vim.keymap.set("n", "cc", '"_cc')
+vim.keymap.set("n", "x", '"_x')
+vim.keymap.set("n", "X", '"_X')
+
+-- Paste in visual mode without overwriting default register
+vim.keymap.set("v", "p", "P")
+
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
 vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
