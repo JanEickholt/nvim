@@ -7,10 +7,6 @@ return {
   },
   config = function()
     local nvim_lsp = require("lspconfig")
-    local mason_lspconfig = require("mason-lspconfig")
-
-    local protocol = require("vim.lsp.protocol")
-
     local on_attach = function(client, bufnr)
       vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
       vim.diagnostic.config({ virtual_text = true })
@@ -28,19 +24,19 @@ return {
       local keymap = vim.keymap.set
 
       -- Navigation keybindings
-      keymap("n", "gd", vim.lsp.buf.definition, opts)   -- Go to definition
-      keymap("n", "gD", vim.lsp.buf.declaration, opts)  -- Go to declaration
-      keymap("n", "gi", vim.lsp.buf.implementation, opts) -- Go to implementation
-      keymap("n", "gr", vim.lsp.buf.references, opts)   -- Find references
+      keymap("n", "gd", vim.lsp.buf.definition, opts)      -- Go to definition
+      keymap("n", "gD", vim.lsp.buf.declaration, opts)     -- Go to declaration
+      keymap("n", "gi", vim.lsp.buf.implementation, opts)  -- Go to implementation
+      keymap("n", "gr", vim.lsp.buf.references, opts)      -- Find references
       keymap("n", "gy", vim.lsp.buf.type_definition, opts) -- Go to type definition
 
       -- Documentation and information
-      keymap("n", "K", vim.lsp.buf.hover, opts)           -- Show hover information
+      keymap("n", "K", vim.lsp.buf.hover, opts)              -- Show hover information
       keymap("n", "<C-k>", vim.lsp.buf.signature_help, opts) -- Show signature help
 
       -- Code actions and modifications
       keymap("n", "<leader>ca", vim.lsp.buf.code_action, opts) -- Code actions
-      keymap("n", "<leader>rn", vim.lsp.buf.rename, opts)   -- Rename symbol
+      keymap("n", "<leader>rn", vim.lsp.buf.rename, opts)      -- Rename symbol
 
       -- Workspace management
       keymap("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
@@ -60,79 +56,49 @@ return {
     end
 
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-    mason_lspconfig.setup_handlers({
-      function(server)
-        nvim_lsp[server].setup({
-          capabilities = capabilities,
-        })
-      end,
-      ["lua_ls"] = function()
-        nvim_lsp["lua_ls"].setup({
-          on_attach = on_attach,
-          capabilities = capabilities,
-        })
-      end,
-      ["pyright"] = function()
-        nvim_lsp["pyright"].setup({
-          on_attach = on_attach,
-          capabilities = capabilities,
-        })
-      end,
-      ["clangd"] = function()
-        nvim_lsp["clangd"].setup({
-          on_attach = on_attach,
-          capabilities = capabilities,
-        })
-      end,
-      ["intelephense"] = function()
-        nvim_lsp["intelephense"].setup({
-          on_attach = on_attach,
-          capabilities = capabilities,
-        })
-      end,
-      ["texlab"] = function()
-        nvim_lsp["texlab"].setup({
-          on_attach = on_attach,
-          capabilities = capabilities,
-        })
-      end,
-      ["jdtls"] = function()
-        nvim_lsp["jdtls"].setup({
-          on_attach = on_attach,
-          capabilities = capabilities,
-        })
-      end,
-      ["tailwindcss"] = function()
-        nvim_lsp["tailwindcss"].setup({
-          on_attach = on_attach,
-          capabilities = capabilities,
-        })
-      end,
-      ["svelte"] = function()
-        nvim_lsp["svelte"].setup({
-          on_attach = on_attach,
-          capabilities = capabilities,
-        })
-      end,
-      ["dockerls"] = function()
-        nvim_lsp["dockerls"].setup({
-          on_attach = on_attach,
-          capabilities = capabilities,
-        })
-      end,
-      ["gopls"] = function()
-        nvim_lsp["gopls"].setup({
-          on_attach = on_attach,
-          capabilities = capabilities,
-        })
-      end,
-      ["ts_ls"] = function()
-        nvim_lsp["ts_ls"].setup({
-          on_attach = on_attach,
-          capabilities = capabilities,
-        })
-      end,
+    nvim_lsp.ts_ls.setup({
+      on_attach = on_attach,
+      capabilities = capabilities,
+    })
+    nvim_lsp.lua_ls.setup({
+      on_attach = on_attach,
+      capabilities = capabilities,
+    })
+    nvim_lsp.pyright.setup({
+      on_attach = on_attach,
+      capabilities = capabilities,
+    })
+    nvim_lsp.clangd.setup({
+      on_attach = on_attach,
+      capabilities = capabilities,
+    })
+    nvim_lsp.intelephense.setup({
+      on_attach = on_attach,
+      capabilities = capabilities,
+    })
+    nvim_lsp.texlab.setup({
+      on_attach = on_attach,
+      capabilities = capabilities,
+    })
+    nvim_lsp.jdtls.setup({
+      on_attach = on_attach,
+      capabilities = capabilities,
+    })
+    nvim_lsp.tailwindcss.setup({
+      on_attach = on_attach,
+      capabilities = capabilities,
+    })
+    nvim_lsp.svelte.setup({
+      on_attach = on_attach,
+      capabilities = capabilities,
+    })
+    nvim_lsp.dockerls.setup({
+      on_attach = on_attach,
+      capabilities = capabilities,
+    })
+    nvim_lsp.gopls.setup({
+      on_attach = on_attach,
+      capabilities = capabilities,
     })
   end,
 }
