@@ -12,9 +12,9 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  { import = "hexdigest.plugins" },
-  { import = "hexdigest.plugins.lsp" },
-  { import = "hexdigest.plugins.dap" },
+  { import = "plugins" },
+  { import = "plugins.lsp" },
+  { import = "plugins.dap" },
 }, {
   checker = {
     enabled = true,

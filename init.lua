@@ -1,4 +1,4 @@
-require("hexdigest.settings")
-require("hexdigest.maps")
-require("hexdigest.lazy")
-require("hexdigest.autocommands")
+require("config.settings")
+require("config.maps")
+require("config.lazy")
+require("config.autocommands")
