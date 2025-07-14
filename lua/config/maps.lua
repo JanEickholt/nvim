@@ -40,7 +40,7 @@ vim.keymap.set("i", "<C-BS>", "<C-w>", { desc = "Delete word backward" })
 vim.keymap.set("n", "q", "", { desc = "Disabled (use Q for macros)" })
 vim.keymap.set("n", "Q", "q", { desc = "Record macro" })
 
--- Center after most code navigation commands
+-- Center amter most code navigation commands
 vim.keymap.set("n", "G", "Gzz", { desc = "Go to end and center" })
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll up and center" })
@@ -53,3 +53,17 @@ vim.keymap.set("n", "N", "Nzz", { desc = "Previous search and center" })
 vim.keymap.set("n", "*", "*zz", { desc = "Search word under cursor and center" })
 vim.keymap.set("n", "#", "#zz", { desc = "Search word under cursor backward and center" })
 vim.keymap.set("n", "%", "%zz", { desc = "Match bracket and center" })
+
+vim.keymap.set("n", "<leader>ya", 'ggVG"+y', { desc = "Copy file content to system clipboard" })
+
+-- better indenting
+vim.keymap.set("v", "<", "<gv", { desc = "Indent left and reselect" })
+vim.keymap.set("v", ">", ">gv", { desc = "Indent right and reselect" })
+
+-- Disable arrow keys
+vim.keymap.set({ "n", "i", "v" }, "<Up>", "<Nop>", { desc = "Disable Up arrow key" })
+vim.keymap.set({ "n", "i", "v" }, "<Down>", "<Nop>", { desc = "Disable Down arrow key" })
+vim.keymap.set({ "n", "i", "v" }, "<Left>", "<Nop>", { desc = "Disable Left arrow key" })
+vim.keymap.set({ "n", "i", "v" }, "<Right>", "<Nop>", { desc = "Disable Right arrow key" })
+
+vim.keymap.set("i", "jj", "<ESC>", { silent = true }, { desc = "Exit insert mode with jj" })
