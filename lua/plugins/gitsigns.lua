@@ -27,6 +27,7 @@ return {
     --- @diagnostic disable-next-line: unused-local
     on_attach = function(buffer)
       local gs = package.loaded.gitsigns
+      local diff_sanitize = require("scripts.ui.diff-sanitize")
 
       -- Helper function for mapping keys
       local function map(mode, l, r, desc)
@@ -80,8 +81,66 @@ return {
           vim.cmd.normal({ "]c", bang = true })
           vim.cmd("normal! zz")
         end, "Previous change in diff")
+
+        vim.api.nvim_create_autocmd("TabClosed", {
+          callback = function(args)
+            diff_sanitize.re_enable_diff_features()
+            local closed_tab_nr = tonumber(args.file)
+            if closed_tab_nr == diff_tab_nr then
+              require("modules.gitsigns.restore-bindings").restore_gs_bindings()
+
+              -- Clean up the created buffers
+              for _, buf in ipairs(created_buffers or {}) do
+                if vim.api.nvim_buf_is_valid(buf) then
+                  -- Check if buffer is empty and unnamed
+                  local buf_name = vim.api.nvim_buf_get_name(buf)
+                  local buf_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+                  local is_empty = #buf_lines == 1 and buf_lines[1] == ""
+                  local is_unnamed = buf_name == ""
+
+                  if is_empty and is_unnamed then
+                    vim.api.nvim_buf_delete(buf, { force = true })
+                  end
+                end
+              end
+            end
+          end,
+        })
       end
 
+      -- Hunk navigation
+      map("n", "]g", function()
+        local repeat_reverse = require("modules.gitsigns.repeat-reverse")
+        local next_hunk, _ = repeat_reverse.setup_gitsigns()
+        next_hunk()
+      end, "Next Hunk")
+
+      map("n", "[g", function()
+        local repeat_reverse = require("modules.gitsigns.repeat-reverse")
+        local _, prev_hunk = repeat_reverse.setup_gitsigns()
+        prev_hunk()
+      end, "Prev Hunk")
+
+      -- Jump to first/last hunk
+      map("n", "]G", function()
+        gs.nav_hunk("last")
+      end, "Last Hunk")
+
+      map("n", "[G", function()
+        gs.nav_hunk("first")
+      end, "First Hunk")
+
+      -- Buffer operations
+      map("n", "<leader>gS", gs.stage_buffer, "Stage Buffer")
+      map("n", "<leader>gR", gs.reset_buffer, "Reset Buffer")
+
+      -- Hunk operations
+      map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
+      map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
+      map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
+      map("n", "<leader>ghp", gs.preview_hunk_inline, "Preview Hunk Inline")
+
+      -- Blame operations
       map("n", "<leader>gb", function()
         gs.blame_line({ full = true })
       end, "Blame Line")
@@ -101,6 +160,7 @@ return {
         local head_suffix = base and ("(" .. base .. ")") or ""
         vim.t.custom_tabname = "gs diff" .. head_suffix .. ": " .. filename
         gs.diffthis(base)
+        diff_sanitize.disable_diff_features()
 
         local buffers_after = vim.api.nvim_list_bufs()
         local created_buffers = {}
@@ -127,6 +187,13 @@ return {
       map("n", "<leader>god", function()
         create_diff_tab(nil)
       end, "Quick diff in new tab")
+
+      map("n", "<leader>goD", function()
+        create_diff_tab("~")
+      end, "Quick diff ~ in new tab")
+
+      -- Text object for hunks
+      map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
     end,
   },
 }
