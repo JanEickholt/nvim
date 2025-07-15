@@ -80,7 +80,7 @@ return {
         paths = vim.fn.stdpath("config") .. "/lua/plugins/snippets/",
       })
       vim.notify("Snippets refreshed!", vim.log.levels.INFO)
-    end)
+    end, { desc = "Reload LuaSnip snippets" })
 
     -- Optional: Expose helpers globally if needed
     _G.luasnip_helpers = helpers

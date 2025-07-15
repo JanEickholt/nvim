@@ -8,7 +8,10 @@ return {
       -- ] and [ keybinds Alternatives
       { "]'", group = "Alternative next", icon = { icon = "⏭️" } },
       { "['", group = "Alternative previous", icon = { icon = "⏮️" } },
-
+      { "<leader>n", group = "Annotate", icon = { icon = "󰈙" } },
+      { "<leader>G", group = "Git", icon = { icon = "󰊢", hl = "DevIconGitLogo" }, mode = { "n", "v" } },
+      { "<leader>c", group = "Compiler", icon = { icon = "" } },
+      { "<leader>r", group = "Refactor", mode = { "n", "v" } },
       { "<leader>f", group = "Telescope" },
     },
   },

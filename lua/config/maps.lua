@@ -1,69 +1,108 @@
 vim.g.mapleader = " "
 
 vim.opt.scrolloff = 8
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
-vim.keymap.set("n", "J", "mzJ`z")
 
-vim.keymap.set("x", "<leader>p", '"_dP')
-vim.keymap.set({ "n", "v" }, "<leader>y", '"+y')
-vim.keymap.set({ "n", "v" }, "<leader>d", '"_d')
+local has_wk, wk = pcall(require, "which-key")
+
+-- Enhanced map function that handles both vim keymaps and which-key
+local function map(mode, lhs, rhs, options)
+  options = options or {}
+
+  local icon = options.icon
+  local vim_options = vim.tbl_deep_extend("force", {}, options)
+  vim_options.icon = nil -- Remove icon from vim keymap options
+
+  vim.keymap.set(mode, lhs, rhs, vim_options)
+
+  if has_wk and options.icon then
+    local wk_spec = {
+      lhs,
+      rhs,
+      desc = options.desc,
+      icon = icon,
+      mode = mode,
+    }
+
+    wk.add({ wk_spec })
+  end
+end
+
+map("v", "J", ":m '>+1<CR>gv=gv")
+map("v", "K", ":m '<-2<CR>gv=gv")
+map("n", "J", "mzJ`z")
+
+map("x", "<leader>p", '"_dP')
+map({ "n", "v" }, "<leader>y", '"+y')
+map({ "n", "v" }, "<leader>d", '"_d')
 
 -- Make Y work like D or C
-vim.keymap.set("n", "Y", "y$")
+map("n", "Y", "y$")
 
 -- Stop cc, x, and X from overwriting default register
-vim.keymap.set("n", "cc", '"_cc')
-vim.keymap.set("n", "x", '"_x')
-vim.keymap.set("n", "X", '"_X')
+map("n", "cc", '"_cc')
+map("n", "x", '"_x')
+map("n", "X", '"_X')
 
 -- Paste in visual mode without overwriting default register
-vim.keymap.set("v", "p", "P")
+map("v", "p", "P")
 
-vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
-vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
-vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+map("n", "<C-k>", "<cmd>cnext<CR>zz")
+map("n", "<C-j>", "<cmd>cprev<CR>zz")
+map("n", "<leader>k", "<cmd>lnext<CR>zz")
+map("n", "<leader>j", "<cmd>lprev<CR>zz")
 
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>//gI<Left><Left><Left>]])
+map("n", "<leader>s", [[:%s/\<<C-r><C-w>\>//gI<Left><Left><Left>]])
 
-vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+map("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
-vim.keymap.set("v", "<leader>i", "g<C-a>")
+map("v", "<leader>i", "g<C-a>")
 
-vim.keymap.set({ "i", "n", "v" }, "<C-C>", "<esc>", { desc = "Make Ctrl+C behave exactly like escape." })
+map({ "i", "n", "v" }, "<C-C>", "<esc>", { desc = "Make Ctrl+C behave exactly like escape." })
 
 -- Delete whole word with ctrl+backspace (interpreted as <C-h> in terminal)
-vim.keymap.set("i", "<C-BS>", "<C-w>", { desc = "Delete word backward" })
+map("i", "<C-BS>", "<C-w>", { desc = "Delete word backward" })
 
 -- Rebind macro key cause mistakes are made too often lol
-vim.keymap.set("n", "q", "", { desc = "Disabled (use Q for macros)" })
-vim.keymap.set("n", "Q", "q", { desc = "Record macro" })
+map("n", "q", "", { desc = "Disabled (use Q for macros)" })
+map("n", "Q", "q", { desc = "Record macro" })
 
--- Center amter most code navigation commands
-vim.keymap.set("n", "G", "Gzz", { desc = "Go to end and center" })
-vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
-vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll up and center" })
-vim.keymap.set("n", "<C-O>", "<C-O>zz", { desc = "Jump back and center" })
-vim.keymap.set("n", "<C-I>", "<C-I>zz", { desc = "Jump forward and center" })
-vim.keymap.set("n", "{", "{zz", { desc = "Previous paragraph and center" })
-vim.keymap.set("n", "}", "}zz", { desc = "Next paragraph and center" })
-vim.keymap.set("n", "n", "nzz", { desc = "Next search and center" })
-vim.keymap.set("n", "N", "Nzz", { desc = "Previous search and center" })
-vim.keymap.set("n", "*", "*zz", { desc = "Search word under cursor and center" })
-vim.keymap.set("n", "#", "#zz", { desc = "Search word under cursor backward and center" })
-vim.keymap.set("n", "%", "%zz", { desc = "Match bracket and center" })
+-- Center after most code navigation commands
+map("n", "G", "Gzz", { desc = "Go to end and center" })
+map("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
+map("n", "<C-u>", "<C-u>zz", { desc = "Scroll up and center" })
+map("n", "<C-O>", "<C-O>zz", { desc = "Jump back and center" })
+map("n", "<C-I>", "<C-I>zz", { desc = "Jump forward and center" })
+map("n", "{", "{zz", { desc = "Previous paragraph and center" })
+map("n", "}", "}zz", { desc = "Next paragraph and center" })
+map("n", "n", "nzz", { desc = "Next search and center" })
+map("n", "N", "Nzz", { desc = "Previous search and center" })
+map("n", "*", "*zz", { desc = "Search word under cursor and center" })
+map("n", "#", "#zz", { desc = "Search word under cursor backward and center" })
+map("n", "%", "%zz", { desc = "Match bracket and center" })
 
-vim.keymap.set("n", "<leader>ya", 'ggVG"+y', { desc = "Copy file content to system clipboard" })
+map("n", "<leader>ya", 'ggVG"+y', { desc = "Copy file content to system clipboard" })
 
 -- better indenting
-vim.keymap.set("v", "<", "<gv", { desc = "Indent left and reselect" })
-vim.keymap.set("v", ">", ">gv", { desc = "Indent right and reselect" })
+map("v", "<", "<gv", { desc = "Indent left and reselect" })
+map("v", ">", ">gv", { desc = "Indent right and reselect" })
 
 -- Disable arrow keys
-vim.keymap.set({ "n", "i", "v" }, "<Up>", "<Nop>", { desc = "Disable Up arrow key" })
-vim.keymap.set({ "n", "i", "v" }, "<Down>", "<Nop>", { desc = "Disable Down arrow key" })
-vim.keymap.set({ "n", "i", "v" }, "<Left>", "<Nop>", { desc = "Disable Left arrow key" })
-vim.keymap.set({ "n", "i", "v" }, "<Right>", "<Nop>", { desc = "Disable Right arrow key" })
+map({ "n", "i", "v" }, "<Up>", "<Nop>", { desc = "Disable Up arrow key" })
+map({ "n", "i", "v" }, "<Down>", "<Nop>", { desc = "Disable Down arrow key" })
+map({ "n", "i", "v" }, "<Left>", "<Nop>", { desc = "Disable Left arrow key" })
+map({ "n", "i", "v" }, "<Right>", "<Nop>", { desc = "Disable Right arrow key" })
 
-vim.keymap.set("i", "jj", "<ESC>", { silent = true }, { desc = "Exit insert mode with jj" })
+map("i", "jj", "<ESC>", { silent = true }, { desc = "Exit insert mode with jj" })
+
+-- Swap true/false keywords
+map("n", "<leader>S", function()
+  require("scripts.edit.swap-true-false-keywords").swap_keywords()
+end, { desc = "Swap true/false keywords", icon = "" })
+
+-- Invert (flip flop) comments with gC, in normal and visual mode
+map(
+  { "n", "x" },
+  "gC",
+  "<cmd>set operatorfunc=v:lua.__flip_flop_comment<cr>g@",
+  { silent = true, desc = "Invert comments" }
+)
