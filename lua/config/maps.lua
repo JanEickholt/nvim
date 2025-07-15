@@ -4,25 +4,25 @@ local has_wk, wk = pcall(require, "which-key")
 
 -- Enhanced map function that handles both vim keymaps and which-key
 local function map(mode, lhs, rhs, options)
-  options = options or {}
+	options = options or {}
 
-  local icon = options.icon
-  local vim_options = vim.tbl_deep_extend("force", {}, options)
-  vim_options.icon = nil -- Remove icon from vim keymap options
+	local icon = options.icon
+	local vim_options = vim.tbl_deep_extend("force", {}, options)
+	vim_options.icon = nil -- Remove icon from vim keymap options
 
-  vim.keymap.set(mode, lhs, rhs, vim_options)
+	vim.keymap.set(mode, lhs, rhs, vim_options)
 
-  if has_wk and options.icon then
-    local wk_spec = {
-      lhs,
-      rhs,
-      desc = options.desc,
-      icon = icon,
-      mode = mode,
-    }
+	if has_wk and options.icon then
+		local wk_spec = {
+			lhs,
+			rhs,
+			desc = options.desc,
+			icon = icon,
+			mode = mode,
+		}
 
-    wk.add({ wk_spec })
-  end
+		wk.add({ wk_spec })
+	end
 end
 
 map("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selected lines down" })
@@ -94,13 +94,13 @@ map("i", "jj", "<ESC>", { silent = true }, { desc = "Exit insert mode with jj" }
 
 -- Swap true/false keywords
 map("n", "<leader>S", function()
-  require("scripts.edit.swap-true-false-keywords").swap_keywords()
-end, { desc = "Swap true/false keyword", icon = "" })
+	require("scripts.edit.swap-true-false-keywords").swap_keywords()
+end, { desc = "Swap true/false keyword" })
 
 -- Invert (flip flop) comments with gC, in normal and visual mode
 map(
-  { "n", "x" },
-  "gC",
-  "<cmd>set operatorfunc=v:lua.__flip_flop_comment<cr>g@",
-  { silent = true, desc = "Invert comments", icon = "" }
+	{ "n", "x" },
+	"gC",
+	"<cmd>set operatorfunc=v:lua.__flip_flop_comment<cr>g@",
+	{ silent = true, desc = "Invert comments" }
 )
