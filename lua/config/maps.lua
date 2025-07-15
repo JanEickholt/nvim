@@ -1,7 +1,5 @@
 vim.g.mapleader = " "
 
-vim.opt.scrolloff = 8
-
 local has_wk, wk = pcall(require, "which-key")
 
 -- Enhanced map function that handles both vim keymaps and which-key
@@ -27,9 +25,9 @@ local function map(mode, lhs, rhs, options)
   end
 end
 
-map("v", "J", ":m '>+1<CR>gv=gv")
-map("v", "K", ":m '<-2<CR>gv=gv")
-map("n", "J", "mzJ`z")
+map("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selected lines down" })
+map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selected lines up" })
+map("n", "J", "mzJ`z", { desc = "Join lines without moving cursor" })
 
 map("x", "<leader>p", '"_dP')
 map({ "n", "v" }, "<leader>y", '"+y')
@@ -46,16 +44,16 @@ map("n", "X", '"_X')
 -- Paste in visual mode without overwriting default register
 map("v", "p", "P")
 
-map("n", "<C-k>", "<cmd>cnext<CR>zz")
-map("n", "<C-j>", "<cmd>cprev<CR>zz")
-map("n", "<leader>k", "<cmd>lnext<CR>zz")
-map("n", "<leader>j", "<cmd>lprev<CR>zz")
+map("n", "<C-k>", "<cmd>cnext<CR>zz", { desc = "Next quickfix item" })
+map("n", "<C-j>", "<cmd>cprev<CR>zz", { desc = "Previous quickfix item" })
+map("n", "<leader>k", "<cmd>lnext<CR>zz", { desc = "Next location in quickfix list" })
+map("n", "<leader>j", "<cmd>lprev<CR>zz", { desc = "Previous location in quickfix list" })
 
-map("n", "<leader>s", [[:%s/\<<C-r><C-w>\>//gI<Left><Left><Left>]])
+map("n", "<leader>s", [[:%s/\<<C-r><C-w>\>//gI<Left><Left><Left>]], { desc = "Replace word under cursor in file" })
 
-map("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+map("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true }, { desc = "Make file executable" })
 
-map("v", "<leader>i", "g<C-a>")
+map("v", "<leader>i", "g<C-a>", { desc = "Increment selection" })
 
 map({ "i", "n", "v" }, "<C-C>", "<esc>", { desc = "Make Ctrl+C behave exactly like escape." })
 
@@ -97,12 +95,12 @@ map("i", "jj", "<ESC>", { silent = true }, { desc = "Exit insert mode with jj" }
 -- Swap true/false keywords
 map("n", "<leader>S", function()
   require("scripts.edit.swap-true-false-keywords").swap_keywords()
-end, { desc = "Swap true/false keywords", icon = "" })
+end, { desc = "Swap true/false keyword", icon = "" })
 
 -- Invert (flip flop) comments with gC, in normal and visual mode
 map(
   { "n", "x" },
   "gC",
   "<cmd>set operatorfunc=v:lua.__flip_flop_comment<cr>g@",
-  { silent = true, desc = "Invert comments" }
+  { silent = true, desc = "Invert comments", icon = "" }
 )
