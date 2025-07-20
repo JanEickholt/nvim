@@ -1,4 +1,4 @@
-local helpers = require("hexdigest.plugins.snippets.luasnip-helper-funcs")
+local helpers = require("plugins.snippets.luasnip-helper-funcs")
 local get_visual = helpers.get_visual
 
 -- Math context detection
