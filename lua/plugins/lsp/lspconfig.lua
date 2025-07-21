@@ -36,7 +36,7 @@ return {
           group = vim.api.nvim_create_augroup("Format", { clear = true }),
           buffer = bufnr,
           callback = function()
-            vim.lsp.buf.format()
+            vim.lsp.buf.format({ timeout_ms = 10000 })
           end,
         })
       end
