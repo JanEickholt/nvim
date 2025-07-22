@@ -156,7 +156,7 @@ return {
 			end
 
 			-- Diff operations in new tab
-			map("n", "<leader>god", function()
+			map("n", "<leader>gd", function()
 				create_diff_tab(nil)
 			end, "Quick diff in new tab")
 		end,
