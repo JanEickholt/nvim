@@ -2,10 +2,10 @@ return {
   "sindrets/diffview.nvim",
   enabled = true,
   keys = {
-    { "<leader>gov", "<cmd>DiffviewOpen<cr>",          desc = "DiffView" },
-    { "<leader>goh", mode = { "n" },                   "<cmd>DiffviewFileHistory<cr>", desc = "File history" },
-    { "<leader>goh", mode = { "v" },                   ":DiffviewFileHistory<cr>",     desc = "Lines history" },
-    { "<leader>got", "<cmd>DiffviewFileHistory %<cr>", desc = "This file history" },
+    { "<leader>gv", "<cmd>DiffviewOpen<cr>",          desc = "DiffView" },
+    { "<leader>gh", mode = { "n" },                   "<cmd>DiffviewFileHistory<cr>", desc = "File history" },
+    { "<leader>gh", mode = { "v" },                   ":DiffviewFileHistory<cr>",     desc = "Lines history" },
+    { "<leader>gt", "<cmd>DiffviewFileHistory %<cr>", desc = "This file history" },
   },
   cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory", "DiffviewLog" },
   config = function()
@@ -152,7 +152,14 @@ return {
       ehnanced_diff_hl = true,
       keymaps = {
         view = {
-          { "n", "q", actions.close,              { desc = "Close diffview" } },
+          {
+            "n",
+            "q",
+            function()
+              require("diffview").close()
+            end,
+            { desc = "Close diffview" },
+          },
           { "n", "-", actions.toggle_stage_entry, { desc = "Toggle stage file" } },
           {
             "n",
@@ -194,12 +201,26 @@ return {
           },
         },
         file_panel = {
-          { "n", "q", actions.close,              { desc = "Close diffview" } },
+          {
+            "n",
+            "q",
+            function()
+              require("diffview").close()
+            end,
+            { desc = "Close diffview" },
+          },
           { "n", "s", false,                      { desc = "diffview_ignore" } }, -- lets us use flash in diffview
           { "n", "-", actions.toggle_stage_entry, { desc = "Toggle stage file" } },
         },
         file_history_panel = {
-          { "n", "q", actions.close, { desc = "Close diffview" } },
+          {
+            "n",
+            "q",
+            function()
+              require("diffview").close()
+            end,
+            { desc = "Close diffview" },
+          },
         },
       },
     })
