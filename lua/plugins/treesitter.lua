@@ -13,6 +13,7 @@ return {
     },
     enabled = true,
     build = ":TSUpdate",
+    event = "VeryLazy",
     config = function()
       require("nvim-ts-autotag").setup({
         opts = {
