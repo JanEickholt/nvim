@@ -10,11 +10,7 @@ return {
     require("mason-lspconfig").setup({
       automatic_installation = true,
       ensure_installed = {},
-      automatic_enable = {
-        exclude = {
-          "pyright",
-        },
-      },
+      automatic_enable = false,
     })
 
     require("mason-tool-installer").setup({
