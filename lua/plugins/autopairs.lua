@@ -3,9 +3,18 @@ return {
   event = "InsertEnter",
   config = function()
     local npairs = require("nvim-autopairs")
+    local Rule = require("nvim-autopairs.rule")
 
     npairs.setup({
       disable_filetype = { "TelescopePrompt", "vim" },
+    })
+
+    npairs.add_rules({
+      Rule("$", "$", { "tex", "latex" }),
+    })
+
+    npairs.add_rules({
+      Rule("<", ">", { "html", "typescript", "typescriptreact", "javascriptreact" }),
     })
 
     vim.keymap.set("i", "jk", function()
@@ -18,7 +27,7 @@ return {
       local row, col = unpack(vim.api.nvim_win_get_cursor(0))
       local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
       local total_lines = #lines
-      local closing_chars = { '"', "'", ")", "}", "]", "`" }
+      local closing_chars = { '"', "'", ")", "}", "]", "`", ">", "$" }
 
       local function is_whitespace(char)
         return char:match("%s") ~= nil
