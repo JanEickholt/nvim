@@ -40,11 +40,20 @@ return {
         ensure_installed = {
           "lua",
           "python",
+          "svelte",
+          "javascript",
+          "typescript",
+          "html",
+          "css",
+          "lua",
         },
         highlight = {
           enable = true,
           additional_vim_regex_highlighting = false,
           disable = { "latex" },
+        },
+        indent = {
+          enable = true,
         },
         incremental_selection = {
           enable = true,
@@ -140,6 +149,12 @@ return {
             },
           },
         },
+      })
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "svelte",
+        callback = function()
+          vim.treesitter.start()
+        end,
       })
     end,
   },
