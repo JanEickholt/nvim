@@ -15,6 +15,10 @@ vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
+-- Transparency for floating windows
+vim.opt.winblend = 0 -- Floating window transparency (0 = full transparency)
+vim.opt.pumblend = 0 -- Popup menu transparency (0 = full transparency)
+
 -- formatting
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2

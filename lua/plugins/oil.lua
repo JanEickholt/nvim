@@ -1,9 +1,23 @@
 return {
   "stevearc/oil.nvim",
   init = function()
-    require("oil").setup()
+    require("oil").setup({
+      default_file_explorer = true,
+      columns = {
+        "icon",
+      },
+      view_options = {
+        show_hidden = true,
+      },
+      float = {
+        border = "rounded",
+        win_options = {
+          winblend = 0,
+          wrap = true,
+        },
+      },
+    })
   end,
-  opts = {},
   keys = {
     {
       "<leader>e",

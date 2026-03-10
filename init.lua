@@ -1,6 +1,7 @@
 require("config.settings")
 require("config.maps")
 require("config.lazy")
+require("config.transparency")
 require("config.autocommands")
 require("scripts.edit.flip-flop-comments")
 require("scripts.edit.swap-true-false-keywords")

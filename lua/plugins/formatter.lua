@@ -6,10 +6,10 @@ return {
 
     conform.setup({
       formatters_by_ft = {
-        javascript = { "prettierd" },
-        typescript = { "prettierd" },
-        javascriptreact = { "prettierd" },
-        typescriptreact = { "prettierd" },
+        javascript = { "semistandard" },
+        typescript = { "semistandard" },
+        javascriptreact = { "semistandard" },
+        typescriptreact = { "semistandard" },
         svelte = { "prettierd" },
         css = { "prettierd" },
         html = { "prettierd" },
@@ -33,12 +33,12 @@ return {
       },
     })
 
-    vim.keymap.set({ "n", "v" }, "<leader>f", function()
-      conform.format({
-        lsp_fallback = true,
-        async = false,
-        timeout_ms = 10000,
-      })
-    end, { desc = "Format file or range (in visual mode)" })
+    conform.formatters.semistandard = {
+      command = "semistandard",
+      args = { "--fix", "$FILENAME" },
+      stdin = false,
+      tempfile = true,
+      exit_codes = { 0, 1 },
+    }
   end,
 }
