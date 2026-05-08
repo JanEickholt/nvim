@@ -35,7 +35,6 @@ return {
         "black",
         "clang-format",
         "pretty-php",
-        "rustfmt",
         "goimports",
 
         -- Linters
