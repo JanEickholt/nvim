@@ -10,12 +10,11 @@ return {
     require("mason-lspconfig").setup({
       automatic_installation = true,
       ensure_installed = {},
-      automatic_enable = true,
+      automatic_enable = false,
     })
 
     require("mason-tool-installer").setup({
       ensure_installed = {
-        -- LSPs
         "typescript-language-server",
         "gopls",
         "dockerls",
@@ -27,7 +26,6 @@ return {
         "clangd",
         "pyright",
         "lua-language-server",
-        "html",
 
         -- Formatters
         "prettierd",
@@ -35,16 +33,23 @@ return {
         "black",
         "clang-format",
         "pretty-php",
+        "rustfmt",
         "goimports",
 
         -- Linters
         "pylint",
         "phpcs",
-        "trivy",
 
         -- Debuggers
         "codelldb",
         "debugpy",
+
+        -- Java Development
+        "java-debug-adapter",
+        "java-test",
+
+        -- Java Formatting
+        "google-java-format",
       },
     })
   end,

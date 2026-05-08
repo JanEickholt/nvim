@@ -1,159 +1,176 @@
 return {
-  "neovim/nvim-lspconfig",
-  event = { "BufReadPre", "BufNewFile" },
-  dependencies = {
-    "hrsh7th/cmp-nvim-lsp",
-    { "folke/neodev.nvim", opts = {} },
-  },
-  config = function()
-    -- Corrected line: removed the parentheses
-    local lspconfig = vim.lsp.config
-    local on_attach = function(client, bufnr)
-      vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-      vim.diagnostic.config({ virtual_text = true })
-      -- format on save
-      if client.server_capabilities.documentFormattingProvider then
-        vim.api.nvim_create_autocmd("BufWritePre", {
-          group = vim.api.nvim_create_augroup("Format", { clear = true }),
-          buffer = bufnr,
-          callback = function()
-            vim.lsp.buf.format()
-          end,
-        })
-      end
-      local opts = { noremap = true, silent = true, buffer = bufnr }
-      local keymap = vim.keymap.set
+	"neovim/nvim-lspconfig",
+	event = { "BufReadPre", "BufNewFile" },
+	dependencies = {
+		"hrsh7th/cmp-nvim-lsp",
+	},
+	config = function()
+		local lspconfig = vim.lsp.config
+		local on_attach = function(client, bufnr)
+			vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+			local opts = { noremap = true, silent = true, buffer = bufnr }
+			local keymap = vim.keymap.set
 
-      -- Navigation keybindings
-      keymap("n", "gd", vim.lsp.buf.definition, opts)   -- Go to definition
-      keymap("n", "gD", vim.lsp.buf.declaration, opts)  -- Go to declaration
-      keymap("n", "gi", vim.lsp.buf.implementation, opts) -- Go to implementation
-      keymap("n", "gr", vim.lsp.buf.references, opts)   -- Find references
-      keymap("n", "gy", vim.lsp.buf.type_definition, opts) -- Go to type definition
+			keymap("n", "gd", vim.lsp.buf.definition, vim.tbl_extend("force", opts, { desc = "Go to definition" }))
+			keymap("n", "gD", vim.lsp.buf.declaration, vim.tbl_extend("force", opts, { desc = "Go to declaration" }))
+			keymap(
+				"n",
+				"gi",
+				vim.lsp.buf.implementation,
+				vim.tbl_extend("force", opts, { desc = "Go to implementation" })
+			)
+			keymap("n", "gr", vim.lsp.buf.references, vim.tbl_extend("force", opts, { desc = "Find references" }))
+			keymap(
+				"n",
+				"gy",
+				vim.lsp.buf.type_definition,
+				vim.tbl_extend("force", opts, { desc = "Go to type definition" })
+			)
 
-      -- Documentation and information
-      keymap("n", "K", vim.lsp.buf.hover, opts)           -- Show hover information
-      keymap("n", "<C-k>", vim.lsp.buf.signature_help, opts) -- Show signature help
+			keymap("n", "K", vim.lsp.buf.hover, vim.tbl_extend("force", opts, { desc = "Hover documentation" }))
+			keymap("n", "gK", vim.lsp.buf.signature_help, vim.tbl_extend("force", opts, { desc = "Signature help" }))
 
-      -- Code actions and modifications
-      keymap("n", "<leader>ca", vim.lsp.buf.code_action, opts) -- Code actions
-      keymap("n", "<leader>rn", vim.lsp.buf.rename, opts)   -- Rename symbol
+			keymap("n", "<leader>ca", vim.lsp.buf.code_action, vim.tbl_extend("force", opts, { desc = "Code actions" }))
+			keymap("n", "<leader>rn", vim.lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "Rename symbol" }))
 
-      -- Workspace management
-      keymap("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
-      keymap("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
-      keymap("n", "<leader>wl", function()
-        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-      end, opts)
+			keymap(
+				"n",
+				"<leader>wa",
+				vim.lsp.buf.add_workspace_folder,
+				vim.tbl_extend("force", opts, { desc = "Add workspace folder" })
+			)
+			keymap(
+				"n",
+				"<leader>wr",
+				vim.lsp.buf.remove_workspace_folder,
+				vim.tbl_extend("force", opts, { desc = "Remove workspace folder" })
+			)
+			keymap("n", "<leader>wl", function()
+				print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+			end, vim.tbl_extend("force", opts, { desc = "List workspace folders" }))
 
-      -- Document formatting
-      keymap("n", "<leader>f", function()
-        vim.lsp.buf.format({ async = true })
-      end, opts)
+			keymap("n", "[d", function()
+				vim.diagnostic.jump({ count = -1, float = true })
+			end, vim.tbl_extend("force", opts, { desc = "Previous diagnostic" }))
+			keymap("n", "]d", function()
+				vim.diagnostic.jump({ count = 1, float = true })
+			end, vim.tbl_extend("force", opts, { desc = "Next diagnostic" }))
+			keymap(
+				"n",
+				"<leader>cd",
+				vim.diagnostic.open_float,
+				vim.tbl_extend("force", opts, { desc = "Line diagnostics" })
+			)
 
-      -- Diagnostics navigation
-      keymap("n", "[d", vim.diagnostic.goto_prev, opts) -- Go to previous diagnostic
-      keymap("n", "]d", vim.diagnostic.goto_next, opts) -- Go to next diagnostic
-    end
+			if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+				keymap("n", "<leader>uh", function()
+					local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
+					vim.lsp.inlay_hint.enable(not enabled, { bufnr = bufnr })
+				end, vim.tbl_extend("force", opts, { desc = "Toggle inlay hints" }))
+			end
+		end
 
-    local capabilities = require("cmp_nvim_lsp").default_capabilities()
-    vim.lsp.config("ts_ls", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-      root_markers = { { "nx.json", "angular.json", "package.json" }, ".git" },
-    })
-    vim.lsp.enable("ts_ls")
+		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-    vim.lsp.config("angularls", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-      root_markers = { { "nx.json", "angular.json" }, ".git" },
-      on_new_config = function(new_config, _)
-        local project_root = new_config.root_dir
-        local ngls_path = project_root .. "/node_modules/@angular/language-server"
-        new_config.cmd = {
-          "node",
-          ngls_path .. "/bin/ngserver",
-          "--stdio",
-          "--tsProbeLocations",
-          project_root,
-          "--ngProbeLocations",
-          project_root,
-        }
-      end,
-    })
-    -- vim.lsp.enable("angularls")
+		lspconfig("ts_ls", {
+			on_attach = on_attach,
+			capabilities = capabilities,
+			root_markers = { { "nx.json", "angular.json", "package.json" }, ".git" },
+		})
+		vim.lsp.enable("ts_ls")
 
-    vim.lsp.config("cssls", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    })
-    vim.lsp.enable("cssls")
+		lspconfig("angularls", {
+			on_attach = on_attach,
+			capabilities = capabilities,
+			root_markers = { { "nx.json", "angular.json" }, ".git" },
+			on_new_config = function(new_config, _)
+				local project_root = new_config.root_dir
+				local ngls_path = project_root .. "/node_modules/@angular/language-server"
+				new_config.cmd = {
+					"node",
+					ngls_path .. "/bin/ngserver",
+					"--stdio",
+					"--tsProbeLocations",
+					project_root,
+					"--ngProbeLocations",
+					project_root,
+				}
+			end,
+		})
+		-- vim.lsp.enable("angularls")
 
-    vim.lsp.config("html", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    })
-    vim.lsp.enable("html")
+		lspconfig("cssls", {
+			on_attach = on_attach,
+			capabilities = capabilities,
+		})
+		vim.lsp.enable("cssls")
 
-    vim.lsp.config("lua_ls", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    })
-    vim.lsp.enable("lua_ls")
+		lspconfig("html", {
+			on_attach = on_attach,
+			capabilities = capabilities,
+		})
+		vim.lsp.enable("html")
 
-    vim.lsp.config("pyright", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    })
-    vim.lsp.enable("pyright")
+		lspconfig("lua_ls", {
+			on_attach = on_attach,
+			capabilities = capabilities,
+		})
+		vim.lsp.enable("lua_ls")
 
-    vim.lsp.config("clangd", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    })
-    vim.lsp.enable("clangd")
+		lspconfig("pyright", {
+			on_attach = on_attach,
+			capabilities = capabilities,
+		})
+		vim.lsp.enable("pyright")
 
-    vim.lsp.config("intelephense", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    })
-    vim.lsp.enable("intelephense")
+		local clangd_capabilities = vim.deepcopy(capabilities)
+		clangd_capabilities.offsetEncoding = { "utf-16" }
+		lspconfig("clangd", {
+			on_attach = on_attach,
+			capabilities = clangd_capabilities,
+		})
+		vim.lsp.enable("clangd")
 
-    vim.lsp.config("texlab", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    })
-    vim.lsp.enable("texlab")
+		lspconfig("intelephense", {
+			on_attach = on_attach,
+			capabilities = capabilities,
+		})
+		vim.lsp.enable("intelephense")
 
-    vim.lsp.config("jdtls", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    })
-    vim.lsp.enable("jdtls")
+		lspconfig("texlab", {
+			on_attach = on_attach,
+			capabilities = capabilities,
+		})
+		vim.lsp.enable("texlab")
 
-    vim.lsp.config("tailwindcss", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    })
-    vim.lsp.enable("tailwindcss")
+		lspconfig("tailwindcss", {
+			on_attach = on_attach,
+			capabilities = capabilities,
+		})
+		vim.lsp.enable("tailwindcss")
 
-    vim.lsp.config("svelte", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    })
-    vim.lsp.enable("svelte")
+		lspconfig("svelte", {
+			on_attach = on_attach,
+			capabilities = capabilities,
+		})
+		vim.lsp.enable("svelte")
 
-    vim.lsp.config("dockerls", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    })
-    vim.lsp.enable("dockerls")
+		lspconfig("dockerls", {
+			on_attach = on_attach,
+			capabilities = capabilities,
+		})
+		vim.lsp.enable("dockerls")
 
-    vim.lsp.config("gopls", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    })
-    vim.lsp.enable("gopls")
-  end,
+		lspconfig("gopls", {
+			on_attach = on_attach,
+			capabilities = capabilities,
+		})
+		vim.lsp.enable("gopls")
+
+		lspconfig("jdtls", {
+			on_attach = on_attach,
+			capabilities = capabilities,
+		})
+		vim.lsp.enable("jdtls")
+	end,
 }

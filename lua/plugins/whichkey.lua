@@ -13,6 +13,13 @@ return {
       { "<leader>c", group = "Compiler", icon = { icon = "" } },
       { "<leader>r", group = "Refactor", mode = { "n", "v" } },
       { "<leader>f", group = "Telescope" },
+      { "<leader>d", group = "debug/diff" },
+      { "<leader>o", group = "tools" },
+      { "<leader>q", group = "session" },
+      { "<leader>t", group = "test" },
+      { "<leader>u", group = "ui" },
+      { "<leader>w", group = "window/workspace" },
+      { "<leader>x", group = "lists" },
     },
   },
   keys = {
