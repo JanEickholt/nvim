@@ -17,6 +17,7 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
+vim.opt.fillchars:append("eob: ")
 
 -- Transparency for floating windows
 vim.opt.winblend = 0 -- Floating window transparency (0 = full transparency)
