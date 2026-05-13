@@ -1,4 +1,4 @@
 return {
-  enabled = true,
-  "github/copilot.vim",
+	enabled = false,
+	"github/copilot.vim",
 }
