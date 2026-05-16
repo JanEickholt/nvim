@@ -19,6 +19,10 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 vim.opt.fillchars:append("eob: ")
 
+-- Show whitespace characters
+vim.opt.list = true
+vim.opt.listchars = { tab = "→ ", space = "·", trail = "·", nbsp = "␣", eol = "↲" }
+
 -- Transparency for floating windows
 vim.opt.winblend = 0 -- Floating window transparency (0 = full transparency)
 vim.opt.pumblend = 0 -- Popup menu transparency (0 = full transparency)

@@ -70,7 +70,13 @@ return {
             fallback()
           end
         end, { "i", "s" }),
-        ["<CR>"] = cmp.mapping.confirm({
+        ["<CR>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.abort()
+          end
+          fallback()
+        end, { "i", "s" }),
+        ["<S-CR>"] = cmp.mapping.confirm({
           behavior = cmp.ConfirmBehavior.Replace,
           select = true,
         }),
